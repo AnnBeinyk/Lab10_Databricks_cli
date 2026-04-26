@@ -97,7 +97,10 @@ def monitor_pipeline(pipeline_id: str, update_id: str, poll_interval: int = 20):
             f"/api/2.0/pipelines/{pipeline_id}/updates/{update_id}"
         )
 
-        state = result.get("state","UNKNOWN")
+        update = result.get("update", {})
+        state = update.get("state")
+        if not state:
+            raise Exception(f"Unexpected response: {result}")
         print(f"Pipeline state: {state}")
 
         if state in ["COMPLETED", "FAILED", "CANCELED"]:
