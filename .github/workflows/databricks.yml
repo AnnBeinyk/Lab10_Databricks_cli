@@ -27,6 +27,12 @@ jobs:
           pip install --upgrade pip
           pip install requests
 
+      - name: Debug env
+        env:
+          DATABRICKS_EMAIL: ${{ secrets.DATABRICKS_EMAIL }}
+        run: |
+          echo "EMAIL=$DATABRICKS_EMAIL"
+
       - name: Run Databricks automation
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
