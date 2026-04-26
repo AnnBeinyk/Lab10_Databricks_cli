@@ -13,6 +13,13 @@ jobs:
   run-databricks:
     runs-on: ubuntu-latest
 
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DATABRICKS_EMAIL: ${{ secrets.DATABRICKS_EMAIL }}
+      DATABRICKS_NOTEBOOK_PATH: ${{ secrets.DATABRICKS_NOTEBOOK_PATH }}
+      DATABRICKS_PIPELINE_ID: ${{ secrets.DATABRICKS_PIPELINE_ID }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,11 +41,5 @@ jobs:
           echo "EMAIL=$DATABRICKS_EMAIL"
 
       - name: Run Databricks automation
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-          DATABRICKS_EMAIL: ${{ secrets.DATABRICKS_EMAIL }}
-          DATABRICKS_NOTEBOOK_PATH: ${{ secrets.DATABRICKS_NOTEBOOK_PATH }}
-          DATABRICKS_PIPELINE_ID: ${{ secrets.DATABRICKS_PIPELINE_ID }}
         run: |
           python main.py
