@@ -5,17 +5,13 @@ on:
     branches:
       - master
       - feature/**
+  pull_request:
+    branches:
+      - master
 
 jobs:
   run-databricks:
     runs-on: ubuntu-latest
-
-    env:
-      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      DATABRICKS_EMAIL: ${{ secrets.DATABRICKS_EMAIL }}
-      DATABRICKS_NOTEBOOK_PATH: ${{ secrets.DATABRICKS_NOTEBOOK_PATH }}
-      DATABRICKS_PIPELINE_ID: ${{ secrets.DATABRICKS_PIPELINE_ID }}
 
     steps:
       - name: Checkout repository
@@ -31,14 +27,12 @@ jobs:
           pip install --upgrade pip
           pip install requests
 
-      - name: Debug env
-        run: |
-          if [ -z "$DATABRICKS_EMAIL" ]; then
-            echo "DATABRICKS_EMAIL is EMPTY"
-            exit 1
-          else
-            echo "DATABRICKS_EMAIL is SET"
-          fi
-
       - name: Run Databricks automation
-        run: python main.py
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          DATABRICKS_EMAIL: ${{ secrets.DATABRICKS_EMAIL }}
+          DATABRICKS_NOTEBOOK_PATH: ${{ secrets.DATABRICKS_NOTEBOOK_PATH }}
+          DATABRICKS_PIPELINE_ID: ${{ secrets.DATABRICKS_PIPELINE_ID }}
+        run: |
+          python main.py
