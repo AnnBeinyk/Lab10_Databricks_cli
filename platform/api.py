@@ -1,21 +1,21 @@
 import os
 import requests
+from config import CONFIG
 
-DATABRICKS_HOST = os.getenv("DATABRICKS_HOST")
-DATABRICKS_TOKEN = os.getenv("DATABRICKS_TOKEN")
 
 HEADERS = {
-    "Authorization": f"Bearer {DATABRICKS_TOKEN}",
+    "Authorization": f"Bearer {CONFIG.token}",
     "Content-Type": "application/json"
 }
 
 
 def call_api(method, endpoint, payload=None):
-    url = f"{DATABRICKS_HOST}{endpoint}"
+    url = f"{CONFIG.host}{endpoint}"
 
     response = requests.request(method, url, headers=HEADERS, json=payload)
-
+    print(f"[{method}] {endpoint} -> {response.status_code}")
     if not response.ok:
+        print(response.text)
         raise Exception(f"API error {response.status_code}: {response.text}")
 
     return response.json()
