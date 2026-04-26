@@ -1,6 +1,6 @@
 import os
 import requests
-from config import CONFIG
+from .config import CONFIG
 
 
 HEADERS = {
